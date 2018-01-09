@@ -1,0 +1,26 @@
+{
+  "name": "myxoon-ts",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "ts-node ./index.ts",
+    "test": "ts-node ./backend/app.ts",
+    "typedoc": "typedoc --out ./doc --module commonjs index.ts"
+  },
+  "dependencies": {
+    "debug": "^3.1.0",
+    "express": "^4.15.5",
+    "pug": "^2.0.0-rc.4",
+    "socket.io": "^2.0.4",
+    "ts-node": "^3.3.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.11.0",
+    "@types/node": "^8.5.7",
+    "@types/socket.io": "^1.4.31",
+    "@types/socketio-wildcard": "^2.0.0",
+    "tslint": "^5.8.0",
+    "typedoc": "^0.8.0",
+    "typescript": "^2.6.2"
+  }
+}
