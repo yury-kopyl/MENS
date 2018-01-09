@@ -1,23 +1,6 @@
-import * as express from 'express';
-import { join } from 'path';
+import { App } from './backend/app';
 import { CreateServer } from './backend/http';
-import { IndexRoute } from './backend/routes/index';
+import * as cfg from './common/config/config.json';
 
-const app = express();
-let router: express.Router;
-
-console.log(join(__dirname, 'backend', 'views'));
-
-app.set('port', 8080);
-app.set('views', join(__dirname, 'backend', 'views'));
-app.set('view engine', 'pug');
-app.use(express.static(join(__dirname, 'frontend')));
-
-router = express.Router();
-// Index
-IndexRoute.create(router);
-
-// Use router middleware
-app.use(router);
-
-const server = new CreateServer(app, 8080);
+const app = App.bootstrap((cfg as any).serverPort).app;
+const server = CreateServer.bootstrap(app, (cfg as any).serverPort).server;

@@ -1,13 +1,17 @@
 import { createServer, Server } from 'http';
 
 export class CreateServer {
-	private server: Server;
+	public server: Server;
 
 	constructor(app, port) {
 		this.createServer(app);
 		this.listen(port);
 		this.onError(port);
 		this.onListening(port);
+	}
+
+	public static bootstrap(app, port): CreateServer {
+		return new CreateServer(app, port);
 	}
 
 	private createServer(app): void {
