@@ -1,39 +1,42 @@
-import { createServer, Server } from 'http';
 import * as socketIo from 'socket.io';
-import { App } from './app';
-const socketMiddle = require('socketio-wildcard')();
+import * as cfg from '../common/config/config.json';
+// const socketMiddle = require('socketio-wildcard')();
 
-import config from './app.config';
+export class Socket {
+	public io: SocketIO.Server;
+	private server: any;
 
-/**
- * Приложение
- */
-export class AppSocket {
-	private io: SocketIO.Server;
-	private server: Server;
-	private cfg: any = config;
-
-	constructor() {
+	constructor(server, port) {
 		// this.socketList = [];
-		// Создаём http сервер
-		this.createServer();
-		// Создаём WS приложение
+		this.initPort(server, port);
 		this.socket();
 		// Вешаем прослушку на порт
-		this.listen();
+		// this.listen();
 		// Устанавливаем middleware приложения
-		/*this.middleware();*/
+		this.middleware(port);
 	}
 
-	private createServer(): void {
-		this.server = createServer(App.bootstrap().app);
+	public static bootstrap(server, port): Socket {
+		return new Socket(server, port);
+	}
+
+	private initPort(server, port): void {
+		if ( (cfg as any).serverPort === (cfg as any).wsPort ) {
+			this.server = server;
+			this.server.on('listening', () => {
+				console.log(`web socket server listening on port: ${port}`);
+			});
+		} else {
+			this.server = port;
+			console.log(`web socket server listening on port: ${port}`);
+		}
 	}
 
 	private socket(): void {
 		this.io = socketIo(this.server);
 	}
 
-	private listen(): void {
+	/*private listen(): void {
 		this.server.listen(this.cfg.wsPort, () => {
 			console.log('Running server on port %s', this.cfg.wsPort);
 		});
@@ -49,17 +52,43 @@ export class AppSocket {
 				console.log('Client disconnected');
 			});
 		});
-	}
-
-	public getApp(): SocketIO.Server {
-		return this.io;
-	}
+	}*/
 
 	/**
 	 * Middleware приложения
 	 */
-	/*private middleware() {
-		this.io.use(socketMiddle);
+	private middleware(port) {
+		this.io.on('connect', (socket: any) => {
+			console.log('Connected client on port %s.', port);
+
+			// console.log(1, socket.conn.id);
+
+			/*this.io.clients((error, clients) => {
+				if (error) { throw error; }
+				console.log( clients.indexOf(socket.conn.id) );
+				console.log(2, clients); // => [6em3d4TJP8Et9EMNAAAA, G5p55dHhGgUnLUctAAAB]
+			});*/
+
+			this.io.emit('init', 'test');
+
+			socket.on('message', (m) => {
+				console.log('[server](message): %s', JSON.stringify(m));
+				console.log(socket.handshake);
+				this.io.emit('message', m);
+			});
+
+			socket.on('disconnect', () => {
+				console.log('Client disconnected');
+			});
+		});
+
+		/*this.io.use((socket, next) => {
+			console.log(socket.request.headers);
+			if (socket.request.headers.cookie) { return next(); }
+			next(new Error('Authentication error'));
+		});*/
+
+		/*this.io.use(socketMiddle);
 
 		this.io.on('connection', (socket) => {
 			socket.on('*', (packet) => {
@@ -103,6 +132,6 @@ export class AppSocket {
 					this.socketList.splice(i, 1);
 				}
 			});
-		});
-	}*/
+		});*/
+	}
 }

@@ -2,5 +2,7 @@ doctype html
 html
 	head
 		title= title
+		script(src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js")
+		script var socket = io('http://localhost:#{wsPort}');
 	body
 		block content

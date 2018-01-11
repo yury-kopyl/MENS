@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
+import * as cfg from '../../common/config/config.json';
 
 /**
  * Базовый маршрут
@@ -41,6 +42,8 @@ export class BaseRoute {
 		res.locals.scripts = this.scripts;
 		// Добавляем заголовок страницы
 		res.locals.title = this.title;
+		// Добавляем порт для WS
+		res.locals.wsPort = (cfg as any).wsPort;
 		// Выводим страницу
 		res.render(view, options);
 	}

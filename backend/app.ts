@@ -25,7 +25,6 @@ export class App {
 	}
 
 	private middleware() {
-		console.log(join(__dirname, 'public'));
 		// this.app.use(logger('dev'));
 		this.app.use(express.static(join(__dirname, 'public')));
 		this.app.use(this.catch404);

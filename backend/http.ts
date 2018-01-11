@@ -36,7 +36,7 @@ export class CreateServer {
 
 	private onListening(port): void {
 		this.server.on('listening', () => {
-			console.log(`Listening on ${port}`);
+			console.log(`http server listening on port: ${port}`);
 		});
 	}
 }

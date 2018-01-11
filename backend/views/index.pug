@@ -1,12 +1,13 @@
 extends layout
-
 block content
 	h1= title
 	p= message
 
-	script(src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js")
 	script.
-		var socket = io('http://localhost:443');
+		socket.on('init', function (data) {
+			console.log(data);
+			socket.emit('message', {my: 'data'});
+		});
 
 		socket.on('news', function (data) {
 			console.log(data);
