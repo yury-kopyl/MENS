@@ -1,9 +1,10 @@
 import * as socketIo from 'socket.io';
 import * as cfg from '../common/config/config.json';
-// const socketMiddle = require('socketio-wildcard')();
+import { WSRouter } from './socket/router';
 
 export class Socket {
 	public io: SocketIO.Server;
+	private users: object;
 	private server: any;
 
 	constructor(server, port) {
@@ -13,11 +14,24 @@ export class Socket {
 		// Вешаем прослушку на порт
 		// this.listen();
 		// Устанавливаем middleware приложения
-		this.middleware(port);
+		this.middleware();
+		this.users = {};
 	}
 
 	public static bootstrap(server, port): Socket {
 		return new Socket(server, port);
+	}
+
+	public addUser(user): void {
+		this.users[user.userName] = user;
+		console.log(this.users);
+	}
+
+	public deleteUser(user): void {
+		if ( this.users.hasOwnProperty(user) ) {
+			delete this.users[user];
+		}
+		console.log(this.users);
 	}
 
 	private initPort(server, port): void {
@@ -54,10 +68,11 @@ export class Socket {
 		});
 	}*/
 
-	/**
-	 * Middleware приложения
-	 */
-	private middleware(port) {
+	private middleware() {
+		WSRouter.init(this.io);
+	}
+
+	private mmiddleware(port) {
 		this.io.on('connect', (socket: any) => {
 			console.log('Connected client on port %s.', port);
 
