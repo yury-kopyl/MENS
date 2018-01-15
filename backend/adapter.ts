@@ -9,8 +9,17 @@ export class Adapter {
 	}
 
 	public static async getUserByPhone(phone): Promise<any> {
-		return new Promise((resolve) => {
+		const promise = new Promise((resolve) => {
 			resolve(Users.getUserByPhone(phone));
 		});
+
+		promise.then((result) => {
+				console.log('Fulfilled: 2' + result);
+			},
+			(error) => {
+				console.log('Rejected: 2' + error);
+			});
+
+		return promise;
 	}
 }

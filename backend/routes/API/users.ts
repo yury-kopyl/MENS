@@ -42,17 +42,21 @@ export class APIUsers extends BaseRoute {
 	}
 
 	public getUserByPhone(req: Request, res: Response, next: NextFunction) {
-		Adapter.getUserByPhone(req.params.user_phone).then((users) => {
-			console.log(3, users);
+		const users: Promise<void> = Adapter.getUserByPhone(req.params.user_phone)
+			.then((result) => {
+				console.log('Fulfilled 3: ' + result);
+			},
+			(error) => {
+				console.log('Rejected 3: ' + error);
+			});
 
-			this.title = 'API :: Users';
-			const options: object = {
-				message: 'API :: Users :: getUserByPhone',
-				users
-			};
+		this.title = 'API :: Users';
+		const options: object = {
+			message: 'API :: Users :: getUserByPhone',
+			users
+		};
 
-			this.render(req, res, 'index', options);
-		});
+		this.render(req, res, 'index', options);
 	}
 
 	/*public getUserById(req: Request, res: Response, next: NextFunction) {
