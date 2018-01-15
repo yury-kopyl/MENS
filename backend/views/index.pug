@@ -2,6 +2,11 @@ extends layout
 block content
 	h1= title
 	p= message
+	each user in users
+		ul
+			li= user.name
+			li= user.surname
+			li= user.nickname
 
 	script.
 		socket.on('init', function (data) {

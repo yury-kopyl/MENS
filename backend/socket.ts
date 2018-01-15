@@ -8,12 +8,8 @@ export class Socket {
 	private server: any;
 
 	constructor(server, port) {
-		// this.socketList = [];
 		this.initPort(server, port);
 		this.socket();
-		// Вешаем прослушку на порт
-		// this.listen();
-		// Устанавливаем middleware приложения
 		this.middleware();
 		this.users = {};
 	}

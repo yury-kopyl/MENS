@@ -2,6 +2,7 @@ import * as express from 'express';
 // import * as logger from 'morgan';
 import { join } from 'path';
 
+import { APIUsers } from './routes/API/users';
 import { IndexRoute } from './routes/index';
 
 export class App {
@@ -36,6 +37,7 @@ export class App {
 		router = express.Router();
 
 		IndexRoute.create(router);
+		APIUsers.create(router);
 
 		this.app.use(router);
 	}
